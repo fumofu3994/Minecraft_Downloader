@@ -34,6 +34,8 @@
     <select class="form-control" name="select">
         <option value="forge">Forge</option>
         <option value="optifine">Optifine</option>
+        <option value="minecraft_client">Minecraft 客户端核心</option>
+        <option value="minecraft_server">Minecraft 服务端核心</option>
     </select>
     <br>
     <span style="font-size:14px;"><div class="g-recaptcha" data-sitekey="input----your----recaptcha----public----here"></div></span>
@@ -85,7 +87,7 @@ if(!empty($_POST["version"]) && $_POST["select"] == 'forge'){
         }
     }
     else {
-        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您依然是机器人。如果您不是的话，<a href=\"https://t.me/piezi\">请点击这里联系开发者</a></div>";
+        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您是机器人,请刷新页面重试。如果仍然无效，<a href=\"https://t.me/piezi\">请点击这里联系开发者</a></div>";
     }
 }
 if(!empty($_POST["version"]) && $_POST["select"] == 'optifine'){
@@ -106,7 +108,27 @@ if(!empty($_POST["version"]) && $_POST["select"] == 'optifine'){
         }
     }
     else {
-        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您依然是机器人。如果您不是的话，<a href=\"https://t.me/piezi\">请点击这里联系开发者</a></div>";
+        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您是机器人,请刷新页面重试。如果仍然无效，<a href=\"https://t.me/piezi\">请点击这里联系开发者</a></div>";
+    }
+}
+if(!empty($_POST["version"]) && $_POST["select"] == 'minecraft_client'){
+    if(!empty(json_decode($recaptcha_result['success']))){
+        $download_link = "https://bmclapi2.bangbang93.com/version/".$_POST["version"]."/client";
+        echo '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>请注意！</strong>如果没有开始自动下载，请<a href="https://bmclapi2.bangbang93.com/version/'.$_POST["version"].'/client">点击这里</a>。</div>';
+        echo '<script>window.location.href="'.$download_link.'"</script>';
+    }
+    else {
+        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您是机器人,请刷新页面重试。如果仍然无效，<a href=\"https://t.me/piezi\">请点击这里联系开发者</a></div>";
+    }
+}
+if(!empty($_POST["version"]) && $_POST["select"] == 'minecraft_server'){
+    if(!empty(json_decode($recaptcha_result['success']))){
+        $download_link = "https://bmclapi2.bangbang93.com/version/".$_POST["version"]."/server";
+        echo '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>请注意！</strong>如果没有开始自动下载，请<a href="https://bmclapi2.bangbang93.com/version/'.$_POST["version"].'/server">点击这里</a>。</div>';
+        echo '<script>window.location.href="'.$download_link.'"</script>';
+    }
+    else {
+        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您是机器人,请刷新页面重试。如果仍然无效，<a href=\"https://t.me/piezi\">请点击这里联系开发者</a></div>";
     }
 }
 ?>

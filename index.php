@@ -42,6 +42,8 @@
     <select class="form-control" name="select">
         <option value="forge">Forge</option>
         <option value="optifine">Optifine</option>
+        <option value="minecraft_client">Minecraft 客户端核心</option>
+        <option value="minecraft_server">Minecraft 服务端核心</option>
     </select>
     <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 </div>
@@ -62,9 +64,9 @@
 <?php
 if(!empty($_POST["version"]) && $_POST["select"] == 'forge'){
     if ($recaptcha->score >= 0.6){
-        $verlist="http://bmclapi2.bangbang93.com/forge/minecraft/".$_POST["version"];
-        $verjson= file_get_contents($verlist);
-        $dejson=json_decode($verjson,true);
+        $verlist = "https://bmclapi2.bangbang93.com/forge/minecraft/".$_POST["version"];
+        $verjson = file_get_contents($verlist);
+        $dejson = json_decode($verjson,true);
         if(empty($dejson)){
             echo "<div class=\"alert alert-danger\"><strong>查询失败！</strong>可能是 Forge 尚未适配该版本，或版本号输入错误</div>";
         }
@@ -83,9 +85,9 @@ if(!empty($_POST["version"]) && $_POST["select"] == 'forge'){
 }
 if(!empty($_POST["version"]) && $_POST["select"] == 'optifine'){
     if ($recaptcha->score >= 0.6){
-        $verlist="http://bmclapi2.bangbang93.com/optifine/".$_POST["version"];
-        $verjson= file_get_contents($verlist);
-        $dejson=json_decode($verjson,true);
+        $verlist = "https://bmclapi2.bangbang93.com/optifine/".$_POST["version"];
+        $verjson = file_get_contents($verlist);
+        $dejson = json_decode($verjson,true);
         if(empty($dejson)){
             echo "<div class=\"alert alert-danger\"><strong>查询失败！</strong>可能是 Optifine 尚未适配该版本，或版本号输入错误</div>";
         }
@@ -97,6 +99,26 @@ if(!empty($_POST["version"]) && $_POST["select"] == 'optifine'){
         foreach($dejson as $key=>$value){
             echo "<tr><td width=\"20%\">".$value['patch']."</td><td width=\"40%\">".$value['type']."</td><td width=\"20%\"><a href=\"https://bmclapi2.bangbang93.com/optifine/".$_POST["version"]."/".$value['type']."/".$value['patch']."\">下载</a></td></tr>";
         }
+    }
+    else {
+        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您是机器人。如果您不是的话，<a href=\"rev2.php\">请点击这里</a></div>";
+    }
+}
+if(!empty($_POST["version"]) && $_POST["select"] == 'minecraft_client'){
+    if ($recaptcha->score >= 0.6){
+        $download_link = "https://bmclapi2.bangbang93.com/version/".$_POST["version"]."/client";
+        echo '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>请注意！</strong>如果没有开始自动下载，请<a href="https://bmclapi2.bangbang93.com/version/'.$_POST["version"].'/client">点击这里</a>。</div>';
+        echo '<script>window.location.href="'.$download_link.'"</script>';
+    }
+    else {
+        echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您是机器人。如果您不是的话，<a href=\"rev2.php\">请点击这里</a></div>";
+    }
+}
+if(!empty($_POST["version"]) && $_POST["select"] == 'minecraft_server'){
+    if ($recaptcha->score >= 0.6){
+        $download_link = "https://bmclapi2.bangbang93.com/version/".$_POST["version"]."/server";
+        echo '<div class="alert alert-warning"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>请注意！</strong>如果没有开始自动下载，请<a href="https://bmclapi2.bangbang93.com/version/'.$_POST["version"].'/server">点击这里</a>。</div>';
+        echo '<script>window.location.href="'.$download_link.'"</script>';
     }
     else {
         echo "<div class=\"alert alert-danger alert-dismissible fade show\"><strong>等等！</strong>reCAPTCHA认为您是机器人。如果您不是的话，<a href=\"rev2.php\">请点击这里</a></div>";
